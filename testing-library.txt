@@ -1,0 +1,56 @@
+import {render, screen} from '@testing-library/test';
+test('name',()=>{
+  render(<App/>);
+  const linkElement=screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+})
+render creates virual dom of whatever you give argument. to access element once virual dom rendered, using screen global object. screen.getByText will find element in dom based on whatever text it is displaying. regular expression, above i for case sensitive. expect line is assertion. expect is global in jest. argument/subject is linkElement,against which we are asserting. toBeInTheDocument is the matcher. matcher will come from jest dom.
+expect(element.textContent).toBe('hello'); 
+expect -> jest global, element.textContent -> subject/argument, toBe -> matcher , hello -> argument of matcher
+
+React testing library helps with 
+rendering components into virtual dom (render method), seraching virtual dom (getByText method), interacting with virtual dom(clicking on element/entering text)
+
+needs test runner to 
+find tests, run tests, make assertions. alternatives mocka, jasmine. but testing-library comes with npx create-react-app
+npm test runs an npm script that runs jest in watch mode.
+
+TDD test driven development 
+part of coding process, not a chore to do afterwords. after any changes in code, it will rerun again, like regression testing
+
+what does react testing library do?
+creates virtual dom for testing & utilities for interacting with dom. allows testing without browser.
+
+Types of tests 
+unit tests - tests one unit of code in isolation 
+integration tests - how multiple units work together eg interaction bw components/microservices 
+functional tests - testing particular function of software (behavior) like validation, getting red box in input, on submitting form, data is handled correctly.
+testing library helps testing users how users use software and not testing your internal code implementation.
+acceptance/e2e tests - use actual browser and server (cypress, selenium)
+
+different mindset from unit testing 
+Unit testing-
+isolated: mock dependencies, test internals, 
+very easy to pinpoint failures,
+further from how users interact with software,
+more likely to break with refactoring. 
+
+Functional testing-
+include all relevant units, test behavior,
+close to how users interact with software,
+robust tests,
+more difficult to debug failing tests. 
+
+Testing library and accessibility 
+https://testing-library.com/docs/queries/about/#priority 
+const linkElement=screen.getByRole('link', {name: /learn react/i}); <a> anchor tag, anchore element has a built in role of 'link', then we have options, we will use name option to identify what the display text should be for this link.
+
+for functional testing, you can write multiple assertions. 
+for unit testing, one assertions only. 
+test("button has correct initial color", () => {
+  render(<App />);
+  // find an element with a role of button and text of 'Change to blue'
+  const colorButton = screen.getByRole("button", { name: "Change to blue" });
+  // expect background color of button to be red
+  expect(colorButton).toHaveStyle({ backgroundColor: "red" });
+});
